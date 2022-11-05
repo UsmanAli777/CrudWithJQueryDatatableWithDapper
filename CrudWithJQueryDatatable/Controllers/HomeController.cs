@@ -356,8 +356,8 @@ namespace CrudWithJQueryDatatable.Controllers
                 using (var message = new MailMessage(fromEmail, toEmail)
                 {
                     Subject = "Reset Password",
-                    Body = "Hi,<br/><br/>We got request for reset your account password. Please click on the below link to reset your password " +
-                    "<br/><br/><a href=" + link + ">Reset Password link</a> ",
+                    Body = "<h3>Hi,</h3><br/><p>We got request for reset your account password. Please click on the below link to reset your password. Please click on below button:<p><br/><button class='btn btn-default'><a href=" + link +">Reset Password</a></button> ",
+                    IsBodyHtml = true,
                 })
                     smtp.Send(message);
             }
@@ -366,8 +366,8 @@ namespace CrudWithJQueryDatatable.Controllers
                 using (var message = new MailMessage(fromEmail, toEmail)
                 {
                     Subject = "Account Verification",
-                    Body = "Hi,We got request for verify your account. Please click on the below link to verify your account " +
-                    "<br/><br/><a href=" + link + ">Verification link</a> ",
+                    Body = "<h3>Hi,</h3><br/><p>We got request for verify your account. Please click on the below link to verify your account. Please click on below button:<p><br/><button class='btn btn-default'><a href=" + link + ">Verification</a></button> ",
+                    IsBodyHtml = true,
                 })
                     smtp.Send(message);
             }
