@@ -44,6 +44,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BeginCollectionItem, Version=1.2.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BeginCollectionItem.1.2.1.0\lib\net35\BeginCollectionItem.dll</HintPath>
+    </Reference>
     <Reference Include="Dapper, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dapper.2.0.123\lib\net461\Dapper.dll</HintPath>
     </Reference>
@@ -282,7 +285,6 @@
     <Content Include="Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Employee\Index.cshtml" />
     <Content Include="Views\Employee\AddOrEdit.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -299,6 +301,10 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\customClaims.cs" />
+    <Compile Include="Models\DataTable\DataTableRequest.cs" />
+    <Compile Include="Models\DataTable\DataTableResponse.cs" />
+    <Compile Include="Models\DataTable\ListingRequest.cs" />
+    <Compile Include="Models\DataTable\UserPartial.cs" />
     <Compile Include="Models\Employee.cs">
       <DependentUpon>EmployeeDB.tt</DependentUpon>
     </Compile>
@@ -318,8 +324,18 @@
       <DependentUpon>EmployeeDB.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\login.cs" />
+    <Compile Include="Models\Role.cs" />
+    <Compile Include="Models\RoleEdit.cs" />
+    <Compile Include="Models\UserDetail.cs" />
+    <Compile Include="Models\UserEdit.cs" />
+    <Compile Include="Models\UserRoleEdit.cs" />
+    <Compile Include="services\Generic.cs" />
+    <Compile Include="services\IGeneric.cs" />
+    <Compile Include="viewModel\UserRolePartial.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="services\IRoleServices.cs" />
     <Compile Include="services\IUserServices.cs" />
+    <Compile Include="services\RoleServices.cs" />
     <Compile Include="services\UserServices.cs" />
     <Compile Include="StartUp.cs" />
     <Compile Include="viewModel\changePassword.cs" />
@@ -337,11 +353,17 @@
     <Content Include="Views\Home\Login.cshtml" />
     <Content Include="Views\Home\changePassword.cshtml" />
     <Content Include="Views\Home\ProfilePicture.cshtml" />
-    <Content Include="Views\Home\profile.cshtml" />
     <Content Include="Views\Home\userdetails.cshtml" />
     <Content Include="Views\Home\ForgotPassword.cshtml" />
     <Content Include="Views\Home\ResetPassword.cshtml" />
     <Content Include="Views\Home\VerifyAccount.cshtml" />
+    <Content Include="Views\Employee\Index.cshtml" />
+    <Content Include="Views\Home\GetUser.cshtml" />
+    <Content Include="Views\Home\profile.cshtml" />
+    <Content Include="Views\Home\CreateNewRole.cshtml" />
+    <Content Include="Views\Home\_UserRoleListPartial.cshtml" />
+    <Content Include="Views\Home\EditUser.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Collection.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

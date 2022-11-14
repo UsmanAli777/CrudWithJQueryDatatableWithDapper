@@ -55,5 +55,24 @@ namespace CrudWithJQueryDatatable.data
                 return param.Get<int>("id");
             }
         }
+        public int CreateUserReturnFKInt(string StoredProcedure, DynamicParameters param = null)
+        {
+            using (SqlConnection sqlCon = new SqlConnection(connectionString))
+            {
+                sqlCon.Open();
+                sqlCon.Execute(StoredProcedure, param, commandType: CommandType.StoredProcedure);
+                return param.Get<int>("UserId");
+            }
+        }
+        public int CreateUserReturn(string StoredProcedure, DynamicParameters param = null)
+        {
+            using (SqlConnection sqlCon = new SqlConnection(connectionString))
+            {
+                sqlCon.Open();
+                sqlCon.Execute(StoredProcedure, param, commandType: CommandType.StoredProcedure);
+                return param.Get<int>("R_Id");
+            }
+        }
+
     }
 }

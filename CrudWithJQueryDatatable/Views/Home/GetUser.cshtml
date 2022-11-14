@@ -1,31 +1,29 @@
 ﻿@{
-    ViewBag.Title = "Employee List";
+    ViewBag.Title = "GetRoles";
 }
-<h2 class="mb-4">Employee Details</h2>
-<a class="btn btn-success" style="margin-bottom: 10px" data-toggle="modal" data-target="#exampleModalCenter" data-url="/Employee/AddOrEdit" data-type='add'> Add New Employee</a>
 
-<table id="employeeTable" class="ui celled table" width="100%">
+<h2 class="mb-4">User Details</h2>
+<a class="btn btn-success" style="margin-bottom: 10px" data-toggle="modal" data-target="#exampleModalCenter" data-url="/Home/CreateNewRole" data-type='add'> Add New Role</a>
+
+<table id="roleTable" class="ui celled table" width="100%">
     <thead>
         <tr>
-            <th>Name</th>
-            <th>Position</th>
-            <th>Office</th>
-            <th>Age</th>
-            <th>Salary</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Role</th>
             <th>Actions</th>
         </tr>
     </thead>
     <tfoot>
         <tr>
-            <th>Name</th>
-            <th>Position</th>
-            <th>Office</th>
-            <th>Age</th>
-            <th>Salary</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Role</th>
             <th>Actions</th>
         </tr>
     </tfoot>
 </table>
+
 <link href="https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.8.8/semantic.min.css" rel="stylesheet" />
 <link href="https://cdn.datatables.net/1.12.1/css/dataTables.semanticui.min.css" rel="stylesheet" />
 
@@ -62,36 +60,38 @@
     <script>
         var dataTable;
         $(document).ready(function () {
-            dataTable = $("#employeeTable").DataTable({
-                "dom": "Bflrtip",
-
+            dataTable = $("#roleTable").DataTable({
+                //"dom": "Bflrtip",
                 "ajax": {
-                    "url": "/Employee/GetList",
+                    "url": "/Home/GetUser",
                     "type": "POST",
                     "datatype":"json"
                 },
                 "columns": [
-                    { "data": "Name","name":"Name" },
-                    { "data": "Position", "name": "Position" },
-                    { "data": "Office", "name": "Office" },
-                    { "data": "Age", "name": "Age" },
-                    { "data": "Salary", "name": "Salary" },
+                    { "data": "username", "name": "Username" },
+                    { "data": "email", "name": "Email" },
+                    { "data": "roles_list", "name": "Role" },
                     {
-                        "data": "EmployeeId", "render": function (data) {
-                            return "<a class='btn btn-primary btn-sm' data-url='/Employee/AddOrEdit?id=" + data +"' data-type='edit' data-toggle='modal' data-target='#exampleModalCenter' > Edit</a> <a class='btn btn-danger btn-sm' onclick =Delete("+ data +") >Delete</a>"
+                        "data": "id", "render": function (data) {
+                            return "<a class='btn btn-primary btn-sm' data-url='/Home/EditUser?id=" + data + "' data-type='edit' data-toggle='modal' data-target='#exampleModalCenter' > Edit</a> <a class='btn btn-danger btn-sm' onclick =Delete(" + data + ") >Delete</a>"
                         },
                         "width": "150px"
                     }
                 ],
-                "serverSide": true,
+                "serverSide": false,
                 "order": [0, "asc"],
                 "processing": true,
 
-                "language": {
-                    "processing": "Processing... Please wait ",
-                    "emptyTable": "No data found, Please click on <b>Add New</b> button"
-                }
-
+                //"columnDefs": [{
+                //    "order": [[0]],
+                //    "targets": [0],
+                //    "visible": false,
+                //    "searchable": false,
+                    "language": {
+                        "processing": "Processing... Please wait ",
+                        "emptyTable": "No data found, Please click on <b>Add New</b> button"
+                    },
+                //}],
             });
         });
 
@@ -126,7 +126,7 @@
                     {
                         $.ajax({
                             type: "POST",
-                            url: '@Url.Action("Delete","Employee")/' + id,
+                            url: '@Url.Action("DeleteUser", "Home")/' + id,
                             success: function (data) {
                                 dataTable.ajax.reload();
                             }
@@ -134,13 +134,13 @@
                     }
                     swalWithBootstrapButtons.fire(
                         'Deleted!',
-                        'Your file has been deleted.',
+                        'Your Data has been deleted.',
                         'success'
                     )
                 } else if (result.dismiss === Swal.DismissReason.cancel) {
                     swalWithBootstrapButtons.fire(
                         'Cancelled',
-                        'Your imaginary file is safe :)',
+                        'Your imaginary data is safe :)',
                         'error'
                     )
                 }

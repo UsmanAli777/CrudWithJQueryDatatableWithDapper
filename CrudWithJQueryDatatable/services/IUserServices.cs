@@ -1,4 +1,7 @@
 ﻿using CrudWithJQueryDatatable.Models;
+using CrudWithJQueryDatatable.Models.DataTable;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace CrudWithJQueryDatatable.services
 {
@@ -28,6 +31,16 @@ namespace CrudWithJQueryDatatable.services
         login GetResetPasswordCode(string ResetPasswordCode);
 
         int ResetPassword(int id, string password, string resetpasswordcode);
+
         int EmptyResetPassword(int id, bool IsVerify, string resetpasswordcode);
+
+        IEnumerable<UserDetail> GetUserByRole(UserDetail model);
+        Task<DataTableResponse<UserPartial>> GetAllUserAsync(DataTableRequest request);
+        int AddRole(Role model);
+        login GetUserById(int id);
+        List<UserRoleEdit> GetAllRole(int uId);
+        int AddUserRole(int userId, int roleId);
+        void RemoveUserRole(int userId, int roleId);
+        int DeleteUser(int id);
     }
 }

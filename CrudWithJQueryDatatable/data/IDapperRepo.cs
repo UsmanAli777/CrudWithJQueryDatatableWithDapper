@@ -12,5 +12,7 @@ namespace CrudWithJQueryDatatable.data
         int CreateEmployeeReturnInt(string StoredProcedure, DynamicParameters param = null);
 
         int CreateUserReturnInt(string StoredProcedure, DynamicParameters param = null);
+        int CreateUserReturnFKInt(string StoredProcedure, DynamicParameters param = null);
+        int CreateUserReturn(string StoredProcedure, DynamicParameters param = null);
     }
 }

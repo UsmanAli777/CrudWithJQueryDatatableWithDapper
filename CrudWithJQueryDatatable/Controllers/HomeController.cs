@@ -1,27 +1,33 @@
 ﻿using CrudWithJQueryDatatable.Models;
+using CrudWithJQueryDatatable.Models.DataTable;
 using CrudWithJQueryDatatable.services;
 using CrudWithJQueryDatatable.viewModel;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
+using Microsoft.VisualBasic.ApplicationServices;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Linq.Dynamic;
 using System.Net;
 using System.Net.Mail;
 using System.Security.Claims;
 using System.Web;
 using System.Web.Mvc;
+//using System.Web.HttpRequestBase
 
 namespace CrudWithJQueryDatatable.Controllers
 {
     public class HomeController : Controller
     {
         private readonly IUserServices _Services;
+        //private readonly IRoleServices _role;
 
-        public HomeController(IUserServices Services)
+        public HomeController(IUserServices Services/*, IRoleServices role*/)
         {
             _Services = Services;
+            //_role = role;
         }
 
         //GET: Home
@@ -56,7 +62,7 @@ namespace CrudWithJQueryDatatable.Controllers
 
                     if (_Services.VerifyPasswordHash(userfromdb.password, l.password))
                     {
-                        if( verify == true)
+                        if (verify == true)
                         {
                             SignInUser(userfromdb, false);
                             return Redirect("~/Employee/Index");
@@ -79,7 +85,6 @@ namespace CrudWithJQueryDatatable.Controllers
             }
             return View();
         }
-        
 
         private void SignInUser(login currentUser, bool isPersistent)
         {
@@ -94,6 +99,7 @@ namespace CrudWithJQueryDatatable.Controllers
                 //custom claims
                 claims.Add(new Claim("ID", currentUser.id.ToString()));
                 claims.Add(new Claim("username", currentUser.username));
+                claims.Add(new Claim("email", currentUser.email));
                 claims.Add(new Claim("ProfilePic", currentUser.image.ToString()));
                 // Id Profile Picutue
 
@@ -262,10 +268,13 @@ namespace CrudWithJQueryDatatable.Controllers
                     var newImage = req.image;
                     _Services.updateImage(req.id, newImage);
                     var deleteImg = (User.Identity as ClaimsIdentity).Claims.Where(c => c.Type == "ProfilePic").FirstOrDefault();
-                    string oldimg = Request.MapPath(deleteImg.Value.ToString());
-                    if (System.IO.File.Exists(oldimg))
+                    if (deleteImg != null)
                     {
-                        System.IO.File.Delete(oldimg);
+                        string oldimg = Request.MapPath(deleteImg.Value.ToString());
+                        if (System.IO.File.Exists(oldimg))
+                        {
+                            System.IO.File.Delete(oldimg);
+                        }
                     }
                     ViewBag.Message = "profile picture updated successfully.";
 
@@ -314,6 +323,7 @@ namespace CrudWithJQueryDatatable.Controllers
             }
             return View();
         }
+
         public ActionResult AccountVerification(string id)
         {
             var getResetPasswordCode = _Services.GetResetPasswordCode(id);
@@ -338,7 +348,7 @@ namespace CrudWithJQueryDatatable.Controllers
             var link = Request.Url.AbsoluteUri.Replace(Request.Url.PathAndQuery, verifyUrl);
             var fromEmail = new MailAddress("usmanali52a@gmail.com", "Social App");
             var toEmail = new MailAddress(email);
-            var fromEmailPassword = "mctzcqbrgwutqtie"; 
+            var fromEmailPassword = "mctzcqbrgwutqtie";
             const string subject = "Subject";
             const string body = "Body";
             var smtp = new SmtpClient
@@ -356,12 +366,12 @@ namespace CrudWithJQueryDatatable.Controllers
                 using (var message = new MailMessage(fromEmail, toEmail)
                 {
                     Subject = "Reset Password",
-                    Body = "<h3>Hi,</h3><br/><p>We got request for reset your account password. Please click on the below link to reset your password. Please click on below button:<p><br/><button class='btn btn-default'><a href=" + link +">Reset Password</a></button> ",
+                    Body = "<h3>Hi,</h3><br/><p>We got request for reset your account password. Please click on the below link to reset your password. Please click on below button:<p><br/><button class='btn btn-default'><a href=" + link + ">Reset Password</a></button> ",
                     IsBodyHtml = true,
                 })
                     smtp.Send(message);
             }
-            else if(emailFor == "AccountVerification")
+            else if (emailFor == "AccountVerification")
             {
                 using (var message = new MailMessage(fromEmail, toEmail)
                 {
@@ -440,6 +450,110 @@ namespace CrudWithJQueryDatatable.Controllers
                 ViewBag.message = "invalid";
             }
             return View(model);
+        }
+
+        //roles
+
+        public ActionResult GetUser()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult GetUser(UserDetail ud)
+        {
+            
+            var user = _Services.GetUserByRole(ud).ToList();
+            return Json(new { data = user }, JsonRequestBehavior.AllowGet);
+            //return View(user);
+        }
+
+        public JsonResult ServerSideProcessing()
+        {
+            var request = new DataTableRequest();
+            request.Draw = Convert.ToInt32(Request.Form["draw"].FirstOrDefault());
+            request.Start = Convert.ToInt32(Request.Form["start"].FirstOrDefault());
+            request.Length = Convert.ToInt32(Request.Form["length"].FirstOrDefault());
+            request.Search = new DataTableSearch()
+            {
+                Value = Request.Form["search[value]"]
+            };
+            request.Order = new DataTableOrder[] {
+            new DataTableOrder()
+            {
+                Dir = Request.Form["order[0][dir]"],
+                Column = Convert.ToInt32(Request.Form["order[0][column]"])
+            }};
+
+
+           // return Json(new { data = _Services.GetAllUserAsync(request).Result, draw = Request["draw"] }, JsonRequestBehavior.AllowGet);
+
+            //return Json();
+           // return Json(new { _Services.GetAllUserAsync(request).Result }, JsonRequestBehavior.AllowGet);
+            return Json(_Services.GetAllUserAsync(request).Result, JsonRequestBehavior.AllowGet);
+
+        }
+
+        public ActionResult CreateNewRole()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult CreateNewRole(Role role)
+        {
+            if (ModelState.IsValid)
+            {
+                int a = _Services.AddRole(role);
+                return Redirect("~/Home/GetUser");
+            }
+            else
+            {
+                ModelState.AddModelError(string.Empty, "Not Added! !");
+                return View();
+            }
+            return View();
+        }
+        [HttpGet]
+        public ActionResult EditUser(int id)
+        {
+
+            var User = _Services.GetUserById(id).email;
+            ViewBag.Email = User.ToString();
+
+            TempData["UserId"] = id;
+            var role = _Services.GetAllRole(id);
+            return View(role);
+        }
+        [HttpPost]
+        public ActionResult EditUser(List<UserRoleEdit> UserRoleEdit)
+        {
+            int UId = (int)TempData["UserId"];
+            var roleChk = UserRoleEdit.Where(x => x.Checked == true);
+
+            foreach (var item in roleChk)
+            {
+
+                if (item.Checked == true)
+                {
+                    _Services.RemoveUserRole(UId, item.R_Id);
+                    _Services.AddUserRole(UId, item.R_Id);
+
+                }
+            };
+
+            var roleUchk = UserRoleEdit.Where(x => x.Checked == false);
+            foreach (var item in roleUchk)
+            {
+                _Services.RemoveUserRole(UId, item.R_Id);
+
+            };
+            return Redirect("~/Home/GetUser");
+        }
+        [HttpPost]
+        public ActionResult DeleteUser(int id)
+        {
+            _Services.DeleteUser(id);
+            return Redirect("~/Home/GetUser");
         }
     }
 }

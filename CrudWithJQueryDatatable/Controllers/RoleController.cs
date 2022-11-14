@@ -1,86 +1,85 @@
-﻿using CrudWithJQueryDatatable.App_Start;
-using CrudWithJQueryDatatable.Models;
-using Microsoft.AspNet.Identity.Owin;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Web;
+﻿using CrudWithJQueryDatatable.Models;
+using CrudWithJQueryDatatable.services;
 using System.Web.Mvc;
 
 namespace CrudWithJQueryDatatable.Controllers
 {
     //public class RoleController : Controller
     //{
-    //    private ApplicationRoleManager _roleManager;
+    //    private readonly IRoleServices _role;
 
-    //    public RoleController()
+    //    public RoleController(IRoleServices role)
     //    {
+    //        _role = role;
     //    }
 
-    //    public RoleController(ApplicationRoleManager roleManager)
-    //    {
-    //        RoleManager = roleManager;
-    //    }
-
-    //    public ApplicationRoleManager RoleManager
-    //    {
-    //        get
-    //        {
-    //            return _roleManager ?? HttpContext.GetOwinContext().Get<ApplicationRoleManager>();
-    //        }
-    //        private set
-    //        {
-    //            _roleManager = value;
-    //        }
-    //    }
-
-    //    // GET: Role
     //    public ActionResult Index()
     //    {
-    //        List<RoleViewModel> list = new List<RoleViewModel>();
-    //        foreach (var role in RoleManager.Roles)
-    //        {
-    //            list.Add(new RoleViewModel(role));
-    //        }
-    //        return View(list);
+    //        return View(_role.GetAllRole());
     //    }
-    //    public ActionResult Create()
+
+    //    [HttpGet]
+    //    public ActionResult CreateRole()
     //    {
     //        return View();
     //    }
+
     //    [HttpPost]
-    //    public async Task<ActionResult> Create(RoleViewModel model)
+    //    public ActionResult CreateRole(Role role)
     //    {
-    //        var role = new ApplicationRole() { Name = model.Name };
-    //        await RoleManager.CreateAsync(role);
-    //        return RedirectToAction("Index");
+    //        if (ModelState.IsValid)
+    //        {
+    //            _role.AddRole(role);
+    //        }
+    //        else
+    //        {
+    //            ModelState.AddModelError("", "Wrong Detail Add.");
+    //        }
+    //        return View("Index");
     //    }
-    //    public async Task<ActionResult> Edit(string id)
+
+    //    [HttpGet]
+    //    public ActionResult EditRole(int? id)
     //    {
-    //        var role = await RoleManager.FindByIdAsync(id);
-    //        return View(new RoleViewModel(role));
+    //        if (id == null)
+    //        {
+    //            return HttpNotFound();
+    //        }
+    //        var emp = _role.GetRoleById(id.GetValueOrDefault());
+    //        if (emp == null)
+
+    //            return HttpNotFound();
+
+    //        return View(emp);
     //    }
+
     //    [HttpPost]
-    //    public async Task<ActionResult> Edit(RoleViewModel model)
+    //    public ActionResult EditRole(int id, [Bind("RId,RName")] Role role)
     //    {
-    //        var role = new ApplicationRole() {Id = model.Id ,Name = model.Name };
-    //        await RoleManager.UpdateAsync(role);
-    //        return RedirectToAction("Index");
-    //    }
-    //    public async Task<ActionResult> Details(string id)
-    //    {
-    //        var role = await RoleManager.FindByIdAsync(id);
-    //        return View(new RoleViewModel(role));
-    //    }
-    //    public async Task<ActionResult> Delete(string id)
-    //    {
-    //        var role = await RoleManager.FindByIdAsync(id);
-    //        return View(new RoleViewModel(role));
-    //    }
-    //    public async Task<ActionResult> DeleteConfirmed(string id)
-    //    {
-    //        var role = await RoleManager.FindByIdAsync(id);
-    //        await RoleManager.DeleteAsync(role);
-    //        return RedirectToAction("Index");
+    //        long result = 0;
+    //        int Status;
+    //        string Value;
+
+    //        if (ModelState.IsValid)
+    //        {
+    //            result = _role.UpdateRole(role);
+    //            if (result > 0)
+    //            {
+    //                Status = 200;
+    //                Value = Url.Content("~/Design/View/");
+    //            }
+    //            else
+    //            {
+    //                Status = 500;
+    //                Value = "There is some error at server side";
+    //            }
+    //        }
+    //        else
+    //        {
+    //            Status = 500;
+    //            Value = "There is some error at client side";
+    //        }
+    //        return Json(new { status = Status, value = Value });
     //    }
     //}
 }

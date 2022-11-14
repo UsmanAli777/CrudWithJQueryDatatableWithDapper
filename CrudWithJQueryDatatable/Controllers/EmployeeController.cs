@@ -18,15 +18,6 @@ namespace CrudWithJQueryDatatable.Controllers
             return View();
         }
 
-        //public ActionResult GetData()
-        //{
-        //    using(DBModel db = new DBModel())
-        //    {
-        //        List<Employee> empList = db.Employees.ToList<Employee>();
-        //        return Json(new { data = empList }, JsonRequestBehavior.AllowGet);
-        //    }
-        //}
-
         [HttpPost]
         public ActionResult GetList()
         {

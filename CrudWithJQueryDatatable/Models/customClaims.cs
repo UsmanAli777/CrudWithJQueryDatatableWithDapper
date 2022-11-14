@@ -24,5 +24,9 @@ namespace CrudWithJQueryDatatable
         {
             return FindClaim(user, "username")?.Value;
         }
+        public static string email(IPrincipal user)
+        {
+            return FindClaim(user, "email")?.Value;
+        }
     }
 }

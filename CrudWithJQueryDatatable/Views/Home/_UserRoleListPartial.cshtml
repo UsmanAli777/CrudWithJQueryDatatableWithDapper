@@ -1,0 +1,21 @@
+﻿@using HtmlHelpers.BeginCollectionItem;
+@using CrudWithJQueryDatatable.Models
+
+@model CrudWithJQueryDatatable.Models.UserRoleEdit
+
+@using (Html.BeginCollectionItem("UserRoleEdit"))
+{
+
+<tr>
+    <th>
+    <td>
+        @Html.DisplayFor(i => Model.R_Name)
+    </td>
+    <td>
+        @Html.CheckBoxFor(i => Model.Checked)
+    </td>
+    </th>
+</tr>
+    @Html.HiddenFor(i => Model.R_Id)
+
+}
