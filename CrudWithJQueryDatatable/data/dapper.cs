@@ -1,9 +1,11 @@
-﻿using Dapper;
+﻿using CrudWithJQueryDatatable.Models.DataTable;
+using Dapper;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 
 namespace CrudWithJQueryDatatable.data
 {
@@ -55,6 +57,7 @@ namespace CrudWithJQueryDatatable.data
                 return param.Get<int>("id");
             }
         }
+
         public int CreateUserReturnFKInt(string StoredProcedure, DynamicParameters param = null)
         {
             using (SqlConnection sqlCon = new SqlConnection(connectionString))
@@ -64,6 +67,7 @@ namespace CrudWithJQueryDatatable.data
                 return param.Get<int>("UserId");
             }
         }
+
         public int CreateUserReturn(string StoredProcedure, DynamicParameters param = null)
         {
             using (SqlConnection sqlCon = new SqlConnection(connectionString))
@@ -74,5 +78,26 @@ namespace CrudWithJQueryDatatable.data
             }
         }
 
+        public DataTableResponse<T> ReturnListMultiple<T>(string procrdureName, DynamicParameters param = null)
+        {
+            var list = new List<T>();
+            int total = 0;
+            using (SqlConnection sqlCon = new SqlConnection(connectionString))
+            {
+                sqlCon.Open();
+                using (var query = sqlCon.QueryMultiple(procrdureName, param, commandType: CommandType.StoredProcedure))
+                {
+                    list = query.Read<T>().AsList<T>();
+                    if (!query.IsConsumed)
+                        total = query.Read<int>().FirstOrDefault();
+                }
+            }
+            return new DataTableResponse<T>()
+            {
+                data = list,
+                recordsFiltered = total,
+                recordsTotal = total
+            };
+        }
     }
-}
+}//

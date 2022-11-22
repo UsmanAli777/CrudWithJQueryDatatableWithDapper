@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace CrudWithJQueryDatatable.Models
 {
@@ -14,7 +10,8 @@ namespace CrudWithJQueryDatatable.Models
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
-        public UserEdit() { }
+        public UserEdit()
+        { }
 
         public UserEdit(login users)
         {

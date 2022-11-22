@@ -4,7 +4,6 @@ using CrudWithJQueryDatatable.services;
 using CrudWithJQueryDatatable.viewModel;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
-using Microsoft.VisualBasic.ApplicationServices;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,6 +14,7 @@ using System.Net.Mail;
 using System.Security.Claims;
 using System.Web;
 using System.Web.Mvc;
+
 //using System.Web.HttpRequestBase
 
 namespace CrudWithJQueryDatatable.Controllers
@@ -88,19 +88,26 @@ namespace CrudWithJQueryDatatable.Controllers
 
         private void SignInUser(login currentUser, bool isPersistent)
         {
+            var userrole = _Services.UserRoleById(currentUser.id).ToArray();
             //Initialization
             var claims = new List<Claim>();
-
             try
             {
                 //setting
                 claims.Add(new Claim(ClaimTypes.Name, currentUser.username));
                 claims.Add(new Claim(ClaimTypes.NameIdentifier, currentUser.id.ToString()));
+                //claims.Add(new Claim(ClaimTypes.Role, currentUser.R_Name));
+
+                foreach (var item in userrole)
+                {
+                    claims.Add(new Claim(ClaimTypes.Role, item.R_Name));
+                }
                 //custom claims
                 claims.Add(new Claim("ID", currentUser.id.ToString()));
                 claims.Add(new Claim("username", currentUser.username));
                 claims.Add(new Claim("email", currentUser.email));
                 claims.Add(new Claim("ProfilePic", currentUser.image.ToString()));
+
                 // Id Profile Picutue
 
                 var ClaimIdenties = new ClaimsIdentity(claims, DefaultAuthenticationTypes.ApplicationCookie);
@@ -123,6 +130,7 @@ namespace CrudWithJQueryDatatable.Controllers
             {
                 //setting
                 claims.Add(new Claim(ClaimTypes.Name, username));
+
                 var ClaimIdenties = new ClaimsIdentity(claims, DefaultAuthenticationTypes.ApplicationCookie);
             }
             catch (Exception ex)
@@ -454,106 +462,105 @@ namespace CrudWithJQueryDatatable.Controllers
 
         //roles
 
-        public ActionResult GetUser()
-        {
-            return View();
-        }
-        [HttpPost]
-        public ActionResult GetUser(UserDetail ud)
-        {
-            
-            var user = _Services.GetUserByRole(ud).ToList();
-            return Json(new { data = user }, JsonRequestBehavior.AllowGet);
-            //return View(user);
-        }
+        //public ActionResult GetUser()
+        //{
+        //    return View();
+        //}
+        //[HttpPost]
+        //public ActionResult GetUser(UserDetail ud)
+        //{
+        //    var user = _Services.GetUserByRole(ud).ToList();
+        //    return Json(new { data = user }, JsonRequestBehavior.AllowGet);
+        //    //return View(user);
+        //}
 
-        public JsonResult ServerSideProcessing()
-        {
-            var request = new DataTableRequest();
-            request.Draw = Convert.ToInt32(Request.Form["draw"].FirstOrDefault());
-            request.Start = Convert.ToInt32(Request.Form["start"].FirstOrDefault());
-            request.Length = Convert.ToInt32(Request.Form["length"].FirstOrDefault());
-            request.Search = new DataTableSearch()
-            {
-                Value = Request.Form["search[value]"]
-            };
-            request.Order = new DataTableOrder[] {
-            new DataTableOrder()
-            {
-                Dir = Request.Form["order[0][dir]"],
-                Column = Convert.ToInt32(Request.Form["order[0][column]"])
-            }};
+        //public JsonResult ServerSideProcessing()
+        //{
+        //    var request = new DataTableRequest();
+        //    request.Draw = Convert.ToInt32(Request.Form["draw"].FirstOrDefault());
+        //    request.Start = Convert.ToInt32(Request.Form["start"].FirstOrDefault());
+        //    request.Length = Convert.ToInt32(Request.Form["length"].FirstOrDefault());
+        //    request.Search = new DataTableSearch()
+        //    {
+        //        Value = Request.Form["search[value]"]
+        //    };
+        //    request.Order = new DataTableOrder[] {
+        //    new DataTableOrder()
+        //    {
+        //        Dir = Request.Form["order[0][dir]"],
+        //        Column = Convert.ToInt32(Request.Form["order[0][column]"])
+        //    }};
 
+        //    //return Json(new { data = _Services.GetAllUserAsync(request).Result, draw = Request["draw"] }, JsonRequestBehavior.AllowGet);
+        //    //return Json();
+        //    // return Json(new { _Services.GetAllUserAsync(request).Result }, JsonRequestBehavior.AllowGet);
+        //    return Json(_Services.GetAllUserAsync(request).Result, JsonRequestBehavior.AllowGet);
+        //}
 
-           // return Json(new { data = _Services.GetAllUserAsync(request).Result, draw = Request["draw"] }, JsonRequestBehavior.AllowGet);
+        //[Authorize(Roles = "User")]
+        //public ActionResult CreateNewRole()
+        //{
+        //    return View();
+        //}
+        ////[Authorize(Roles = "User")]
+        //[HttpPost]
+        //public ActionResult CreateNewRole(Role role)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        int a = _Services.AddRole(role);
+        //        return Redirect("~/Home/GetUser");
+        //    }
+        //    else
+        //    {
+        //        ModelState.AddModelError(string.Empty, "Not Added! !");
 
-            //return Json();
-           // return Json(new { _Services.GetAllUserAsync(request).Result }, JsonRequestBehavior.AllowGet);
-            return Json(_Services.GetAllUserAsync(request).Result, JsonRequestBehavior.AllowGet);
+        //    }
+        //    return View();
+        //}
 
-        }
+        //[Authorize(Roles = "Admin")]
+        //[HttpGet]
+        //public ActionResult EditUser(int id)
+        //{
+        //    var User = _Services.GetUserById(id).email;
+        //    ViewBag.Email = User.ToString();
 
-        public ActionResult CreateNewRole()
-        {
-            return View();
-        }
+        //    Session["UserId"] = id;
+        //    var role = _Services.GetAllRole(id);
+        //    return View(role);
+        //}
 
-        [HttpPost]
-        public ActionResult CreateNewRole(Role role)
-        {
-            if (ModelState.IsValid)
-            {
-                int a = _Services.AddRole(role);
-                return Redirect("~/Home/GetUser");
-            }
-            else
-            {
-                ModelState.AddModelError(string.Empty, "Not Added! !");
-                return View();
-            }
-            return View();
-        }
-        [HttpGet]
-        public ActionResult EditUser(int id)
-        {
+        //[HttpPost]
+        //public ActionResult EditUser(List<UserRoleEdit> UserRoleEdit)
+        //{
+        //    int UId = (int)Session["UserId"];
+        //    var roleChk = UserRoleEdit.Where(x => x.Checked == true);
 
-            var User = _Services.GetUserById(id).email;
-            ViewBag.Email = User.ToString();
+        //    foreach (var item in roleChk)
+        //    {
+        //        if (item.Checked == true)
+        //        {
+        //            _Services.RemoveUserRole(UId, item.R_Id);
+        //            _Services.AddUserRole(UId, item.R_Id);
 
-            TempData["UserId"] = id;
-            var role = _Services.GetAllRole(id);
-            return View(role);
-        }
-        [HttpPost]
-        public ActionResult EditUser(List<UserRoleEdit> UserRoleEdit)
-        {
-            int UId = (int)TempData["UserId"];
-            var roleChk = UserRoleEdit.Where(x => x.Checked == true);
+        //        }
+        //    };
 
-            foreach (var item in roleChk)
-            {
+        //    var roleUchk = UserRoleEdit.Where(x => x.Checked == false);
+        //    foreach (var item in roleUchk)
+        //    {
+        //        _Services.RemoveUserRole(UId, item.R_Id);
 
-                if (item.Checked == true)
-                {
-                    _Services.RemoveUserRole(UId, item.R_Id);
-                    _Services.AddUserRole(UId, item.R_Id);
+        //    };
+        //    return Redirect("~/Home/GetUser");
+        //}
 
-                }
-            };
-
-            var roleUchk = UserRoleEdit.Where(x => x.Checked == false);
-            foreach (var item in roleUchk)
-            {
-                _Services.RemoveUserRole(UId, item.R_Id);
-
-            };
-            return Redirect("~/Home/GetUser");
-        }
-        [HttpPost]
-        public ActionResult DeleteUser(int id)
-        {
-            _Services.DeleteUser(id);
-            return Redirect("~/Home/GetUser");
-        }
+        //[HttpPost]
+        //public ActionResult DeleteUser(int id)
+        //{
+        //    _Services.DeleteUser(id);
+        //    return Redirect("~/Home/GetUser");
+        //}
     }
 }

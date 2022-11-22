@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace CrudWithJQueryDatatable.Models.DataTable
 {
-   
-        public class DataTableResponse<T>
-        {
-            public int Draw { get; set; }
-            public int RecordsTotal { get; set; }
-            public int RecordsFiltered { get; set; }
-            public T[] Data { get; set; }
-            public string Error { get; set; }
-        }
-    
+    public class DataTableResponse<T>
+    {
+        public int draw { get; set; }
+        public int recordsTotal { get; set; }
+        public int recordsFiltered { get; set; }
+        public List<T> data { get; set; }
+        public string error { get; set; }
+    }
 }

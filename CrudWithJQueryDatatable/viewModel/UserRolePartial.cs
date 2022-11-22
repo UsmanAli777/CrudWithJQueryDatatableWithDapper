@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace CrudWithJQueryDatatable.viewModel
+﻿namespace CrudWithJQueryDatatable.viewModel
 {
     public partial class UserRolePartial
     {
@@ -16,11 +11,13 @@ namespace CrudWithJQueryDatatable.viewModel
         public string ResetPasswordCode { get; set; }
         public string IsVerify { get; set; }
     }
+
     public partial class UserRolePartial
     {
         public int UserId { get; set; }
         public int RoleId { get; set; }
     }
+
     public partial class UserRolePartial
     {
         public int R_Id { get; set; }

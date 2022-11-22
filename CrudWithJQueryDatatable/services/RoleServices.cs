@@ -1,78 +1,110 @@
 ﻿using CrudWithJQueryDatatable.data;
 using CrudWithJQueryDatatable.Models;
+using CrudWithJQueryDatatable.Models.DataTable;
 using Dapper;
-using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 
 namespace CrudWithJQueryDatatable.services
 {
-    //public class RoleServices : IRoleServices
-    //{
-    //    private readonly IDapperRepo _dapperRepo;
+    public class RoleServices : IRoleServices
+    {
+        private readonly DapperRepo _dapperRepo;
+        private readonly Generic _generic;
 
-    //    public RoleServices(IDapperRepo dapperRepo)
-    //    {
-    //        _dapperRepo = dapperRepo;
-    //    }
+        public RoleServices(DapperRepo dapperRepo, Generic generic)
+        {
+            _dapperRepo = dapperRepo;
+            _generic = generic;
+        }
 
-    //    public int AddRole(Role model)
-    //    {
-    //        Dapper.DynamicParameters param = new DynamicParameters();
-    //        param.Add("@RId", -1, dbType: DbType.Int32, direction: ParameterDirection.Output);
-    //        param.Add("@RName", model.R_Name);
+        public IEnumerable<UserDetail> GetUserByRole(UserDetail model)
+        {
+            List<UserDetail> user = new List<UserDetail>();
+            user = _dapperRepo.ReturnList<UserDetail>("dbo.GetUserByRole").ToList();
+            return (user);
+        }
 
-    //        var result = _dapperRepo.CreateUserReturnInt("dbo.AddRole", param);
-    //        if (result > 0)
-    //        { }
-    //        return result;
-    //    }
+        public int AddRole(Role model)
+        {
+            DynamicParameters param = new DynamicParameters();
+            param.Add("@R_Id", -1, dbType: DbType.Int32, direction: ParameterDirection.Output);
+            param.Add("@R_Name", model.R_Name);
+            return _dapperRepo.CreateUserReturn("dbo.AddRole", param);
+        }
 
-    //    public int UpdateRole(Role model)
-    //    {
-    //        Dapper.DynamicParameters param = new DynamicParameters();
-    //        param.Add("@RId", model.R_Id);
-    //        param.Add("@RName", model.R_Name);
+        public login GetUserById(int id)
+        {
+            Dapper.DynamicParameters param = new DynamicParameters();
+            param.Add("@id", id);
+            var user = _dapperRepo.ReturnList<login>("dbo.GetUserById", param).FirstOrDefault();
+            return user;
+        }
 
-    //        var result = _dapperRepo.CreateUserReturnInt("dbo.UpdateRole", param);
-    //        if (result > 0)
-    //        { }
-    //        return result;
-    //    }
+        public List<UserRoleEdit> GetAllRole(int uId)
+        {
+            Dapper.DynamicParameters param = new DynamicParameters();
+            param.Add("@userid", uId);
+            return _dapperRepo.ReturnList<UserRoleEdit>("dbo.GetAllRole", param).ToList();
+        }
 
-    //    public Role GetRoleById(int Id)
-    //    {
-    //        Dapper.DynamicParameters param = new DynamicParameters();
-    //        param.Add("@RId", Id);
-    //        var user = _dapperRepo.ReturnList<Role>("dbo.GetUserByRoleId", param).FirstOrDefault();
+        public int AddUserRole(int userId, int roleId)
+        {
+            DynamicParameters param = new DynamicParameters();
+            param.Add("@Id", -1, dbType: DbType.Int32, direction: ParameterDirection.Output);
+            param.Add("@UserId", userId);
+            param.Add("@RoleId", roleId);
+            return _dapperRepo.CreateUserReturnFKInt("AddUserRole", param);
+        }
 
-    //        return user;
-    //    }
+        public void RemoveUserRole(int userId, int roleId)
+        {
+            DynamicParameters param = new DynamicParameters();
+            param.Add("@UserId", userId);
+            param.Add("@RoleId", roleId);
+            _dapperRepo.CreateUserReturnFKInt("RemoveUserRole", param);
+        }
 
-    //    public int DeleteRole(int Id)
-    //    {
-    //        Dapper.DynamicParameters param = new DynamicParameters();
-    //        param.Add("@RId", Id);
-    //        var user = _dapperRepo.CreateEmployeeReturnInt("dbo.DeleteRole", param);
+        public int DeleteUser(int id)
+        {
+            Dapper.DynamicParameters param = new DynamicParameters();
+            param.Add("@id", id);
+            var user = _dapperRepo.CreateUserReturnInt("dbo.DeleteUser", param);
+            return user;
+        }
 
-    //        return user;
-    //    }
+        //public async Task<DataTableResponse<UserPartial>> GetAllUserAsync(DataTableRequest request)
+        //{
+        //    var req = new ListingRequest()
+        //    {
+        //        StartRowIndex = request.Start,
+        //        PageSize = request.Length,
+        //        //SortExpression = request.Order[0].Column,
+        //        SortExpression = request.Order[0].Dir,
+        //        SearchText = request.Search != null ? request.Search.Value.Trim() : ""
+        //    };
+        //    var users = await _generic.GetUserAsync(req);
+        //    return new DataTableResponse<UserPartial>()
+        //    {
+        //        Draw = request.Draw,
+        //        RecordsTotal = users[0].TotalCount,
+        //        RecordsFiltered = users[0].TotalCount,
+        //        Data = users.ToArray(),
+        //        Error = ""
+        //    };
+        //}
+        public DataTableResponse<UserPartial> GetAllUserDT(DataTableRequest request)
+        {
+            var req = new DTReq()
+            {
+                StartRowIndex = request.Start,
+                PageSize = request.Length,
+                SortExpression = request.Order[0].Dir,
+                SearchText = request.Search != null ? request.Search.Value.Trim() : ""
+            };
 
-    //    public IEnumerable<Role> GetAllRole()
-    //    {
-    //        List<Role> role = new List<Role>();
-    //        role = _dapperRepo.ReturnList<Role>("GetAllRole").ToList();
-    //        return (role);
-    //    }
-
-    //    public IEnumerable<login> UserList(login model)
-    //    {
-    //        Dapper.DynamicParameters param = new DynamicParameters();
-
-    //        param.Add("@Name", model.username);
-    //        param.Add("@Email", model.email);
-    //        return _dapperRepo.ReturnList<login>("dbo.GetUserByRole", param);
-    //    }
-    //}
+            return _generic.GetAllUserMultiple(req);
+        }
+    }
 }

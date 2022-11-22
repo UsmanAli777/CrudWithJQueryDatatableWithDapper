@@ -1,9 +1,9 @@
 ﻿@{
-    ViewBag.Title = "GetRoles";
+    ViewBag.Title = "Index";
 }
 
 <h2 class="mb-4">User Details</h2>
-<a class="btn btn-success" style="margin-bottom: 10px" data-toggle="modal" data-target="#exampleModalCenter" data-url="/Home/CreateNewRole" data-type='add'> Add New Role</a>
+<a class="btn btn-success" style="margin-bottom: 10px" data-toggle="modal" data-target="#exampleModalCenter" data-url="/Role/CreateNewRole" data-type='add'> Add New Role</a>
 
 <table id="roleTable" class="ui celled table" width="100%">
     <thead>
@@ -14,14 +14,7 @@
             <th>Actions</th>
         </tr>
     </thead>
-    <tfoot>
-        <tr>
-            <th>Username</th>
-            <th>Email</th>
-            <th>Role</th>
-            <th>Actions</th>
-        </tr>
-    </tfoot>
+    <tbody></tbody>
 </table>
 
 <link href="https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.8.8/semantic.min.css" rel="stylesheet" />
@@ -62,25 +55,48 @@
         $(document).ready(function () {
             dataTable = $("#roleTable").DataTable({
                 //"dom": "Bflrtip",
+                "Processing": true, // for show progress bar
+                "serverSide": true, // for process server side
+                //"filter": true, // this is for disable filter (search box)
+                //"orderMulti": true, // for disable multiple column at once
+                //"pageLength": 10,
+                "bSortable": true,
+                "paging": true,
                 "ajax": {
-                    "url": "/Home/GetUser",
+                    "url": "/Role/ServerSide",
                     "type": "POST",
                     "datatype":"json"
                 },
+                //"columnDefs": [{
+                //    "order": [[0]],
+                //    "targets": [0],
+                //    "visible": false,
+                //    "searchable": false,
+                //    "language": {
+                //        "emptyTable": "No record found. Please click on Add User for create new record.",
+                //        "Processing": '<i class="fa fa- refresh fa- spin">Laoding...</i>'
+                //    },
+                //}],
                 "columns": [
                     { "data": "username", "name": "Username" },
                     { "data": "email", "name": "Email" },
                     { "data": "roles_list", "name": "Role" },
                     {
                         "data": "id", "render": function (data) {
-                            return "<a class='btn btn-primary btn-sm' data-url='/Home/EditUser?id=" + data + "' data-type='edit' data-toggle='modal' data-target='#exampleModalCenter' > Edit</a> <a class='btn btn-danger btn-sm' onclick =Delete(" + data + ") >Delete</a>"
+                            return "<a class='btn btn-primary btn-sm' data-url='/Role/EditUser?id=" + data + "' data-type='edit' data-toggle='modal' data-target='#exampleModalCenter' > Edit</a> <a class='btn btn-danger btn-sm' onclick =Delete(" + data + ") >Delete</a>"
                         },
                         "width": "150px"
                     }
                 ],
-                "serverSide": false,
-                "order": [0, "asc"],
-                "processing": true,
+                //"order": [0, "asc"],
+                //"serverSide": true,
+                //"filter": true,
+                //"orderMulti": true,
+                //"pageLength": 10,
+                //"bSortable": true,
+                //"paging": true,
+
+                //"processing": true,
 
                 //"columnDefs": [{
                 //    "order": [[0]],
@@ -126,7 +142,7 @@
                     {
                         $.ajax({
                             type: "POST",
-                            url: '@Url.Action("DeleteUser", "Home")/' + id,
+                            url: '@Url.Action("DeleteUser", "Role")/' + id,
                             success: function (data) {
                                 dataTable.ajax.reload();
                             }

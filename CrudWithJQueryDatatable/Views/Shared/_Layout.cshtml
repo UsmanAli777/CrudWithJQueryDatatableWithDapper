@@ -66,7 +66,7 @@
                 </ul>
 
                 <div class="footer">
-                    <p style="text-align: center;">&copy; CRUD Application with DataTable Plugin in ASP.Net MVC</p>
+                    <p style="text-align: center;">&copy; Social Application with DataTable Plugin in ASP.Net MVC</p>
                 </div>
             </div>
         </nav>
@@ -85,25 +85,25 @@
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="nav navbar-nav ml-auto">
                             <li class="nav-item active">
-                                <a class="nav-link" href="~/Employee/Index">Home</a>
+                                <a class="nav-link" href="~/Employee/Index">Employee Details</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="~/Home/profile">About</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="~/Home/GetUser">Roles</a>
+                                <a class="nav-link" href="~/Role/Index">User Details</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" style="margin-right: 500px;" href="#">Contact</a>
+                                <a class="nav-link" style="margin-right: 450px;" href="#">Contact</a>
                             </li>
                             <li class="nav-item">
                                 <div class="nav-link">
                                     <button class="btn btn-primary " type="button" style="width: auto; text-align: center; " data-toggle="dropdown">
                                         Welcome @HttpContext.Current.User.Identity.Name <img src="@Url.Content(customClaims.ProfilePic(User))" alt="" style="border-radius: 50%;" height=30 width=30 />
-                                                                                        <i class="fa fa-caret-down"></i>
+                                        <i class="fa fa-caret-down"></i>
                                     </button>
                                     <ul class="dropdown-menu">
-                                        <li  style="display: block;"><a href="~/Home/profile">View Profile</a></li>
+                                        <li style="display: block;"><a href="~/Home/profile">View Profile</a></li>
                                         <li style="display: block;"><a href="~/Home/changePassword">Change Password</a></li>
                                         <li style="display: block;"><a href="~/Home/LogOff">LogOff</a></li>
                                     </ul>

@@ -1,5 +1,6 @@
 ﻿using CrudWithJQueryDatatable.Models;
 using CrudWithJQueryDatatable.Models.DataTable;
+using CrudWithJQueryDatatable.viewModel;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -14,6 +15,8 @@ namespace CrudWithJQueryDatatable.services
         /// </summary>
         /// <param name="username"></param>
         /// <returns>login class</returns>
+        login GetUserByRoleIdForLogin(string username);
+
         login userLogin(string username);
 
         login updatePassword(int id, string password);
@@ -34,13 +37,19 @@ namespace CrudWithJQueryDatatable.services
 
         int EmptyResetPassword(int id, bool IsVerify, string resetpasswordcode);
 
-        IEnumerable<UserDetail> GetUserByRole(UserDetail model);
-        Task<DataTableResponse<UserPartial>> GetAllUserAsync(DataTableRequest request);
-        int AddRole(Role model);
+        IEnumerable<UserRolePartial> UserRoleList(int id);
+
+        IEnumerable<UserRolePartial> UserRoleById(int id);
+
+        //IEnumerable<UserDetail> GetUserByRole(UserDetail model);
+        //Task<DataTableResponse<UserPartial>> GetAllUserAsync(DataTableRequest request);
+
+        //int AddRole(Role model);
         login GetUserById(int id);
-        List<UserRoleEdit> GetAllRole(int uId);
-        int AddUserRole(int userId, int roleId);
-        void RemoveUserRole(int userId, int roleId);
-        int DeleteUser(int id);
+
+        //List<UserRoleEdit> GetAllRole(int uId);
+        //int AddUserRole(int userId, int roleId);
+        //void RemoveUserRole(int userId, int roleId);
+        //int DeleteUser(int id);
     }
 }

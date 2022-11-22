@@ -1,20 +1,26 @@
 ﻿using CrudWithJQueryDatatable.Models;
+using CrudWithJQueryDatatable.Models.DataTable;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace CrudWithJQueryDatatable.services
 {
-//    public interface IRoleServices
-//    {
-//        int AddRole(Role model);
+    public interface IRoleServices
+    {
+        IEnumerable<UserDetail> GetUserByRole(UserDetail model);
 
-//        int DeleteRole(int Id);
+        int AddRole(Role model);
 
-//        IEnumerable<Role> GetAllRole();
+        login GetUserById(int id);
 
-//        Role GetRoleById(int Id);
+        List<UserRoleEdit> GetAllRole(int uId);
 
-//        int UpdateRole(Role model);
+        int AddUserRole(int userId, int roleId);
 
-//        IEnumerable<login> UserList(login model);
-//    }
+        void RemoveUserRole(int userId, int roleId);
+
+        int DeleteUser(int id);
+        //Task<DataTableResponse<UserPartial>> GetAllUserAsync(DataTableRequest request);
+        DataTableResponse<UserPartial> GetAllUserDT(DataTableRequest request);
+    }
 }

@@ -18,5 +18,6 @@ namespace CrudWithJQueryDatatable.Models
 
         public string image { get; set; }
         public string ResetPasswordCode { get; set; }
+        //public string R_Name { get; set; }
     }
 }

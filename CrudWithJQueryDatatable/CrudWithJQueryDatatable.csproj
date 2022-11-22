@@ -303,7 +303,9 @@
     <Compile Include="Models\customClaims.cs" />
     <Compile Include="Models\DataTable\DataTableRequest.cs" />
     <Compile Include="Models\DataTable\DataTableResponse.cs" />
+    <Compile Include="Models\DataTable\DTReq.cs" />
     <Compile Include="Models\DataTable\ListingRequest.cs" />
+    <Compile Include="Models\DataTable\ListingRequestDT.cs" />
     <Compile Include="Models\DataTable\UserPartial.cs" />
     <Compile Include="Models\Employee.cs">
       <DependentUpon>EmployeeDB.tt</DependentUpon>
@@ -358,12 +360,12 @@
     <Content Include="Views\Home\ResetPassword.cshtml" />
     <Content Include="Views\Home\VerifyAccount.cshtml" />
     <Content Include="Views\Employee\Index.cshtml" />
-    <Content Include="Views\Home\GetUser.cshtml" />
     <Content Include="Views\Home\profile.cshtml" />
-    <Content Include="Views\Home\CreateNewRole.cshtml" />
-    <Content Include="Views\Home\_UserRoleListPartial.cshtml" />
-    <Content Include="Views\Home\EditUser.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Collection.cshtml" />
+    <Content Include="Views\Role\Index.cshtml" />
+    <Content Include="Views\Role\CreateNewRole.cshtml" />
+    <Content Include="Views\Role\EditUser.cshtml" />
+    <Content Include="Views\Role\_UserListPartial.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -373,7 +375,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Role\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

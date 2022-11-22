@@ -5,68 +5,68 @@
 }
 @using (Html.BeginForm("Signup", "Home", FormMethod.Post))
 {
-    <!DOCTYPE html>
+<!DOCTYPE html>
 
-    <html>
-    <head>
-        <meta name="viewport" content="width=device-width" />
-        <link href="~/Content/login.css" rel="stylesheet" />
-        <title>Signup</title>
-    </head>
-    <body>
-        @Html.AntiForgeryToken()
-        <div class="login">
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-            <h1>Signup</h1>
-            <table>
-                <tr>
-                    <td>@Html.LabelFor(a => a.username)</td>
-                    <td>@Html.TextBoxFor(a => a.username)</td>
-                    <td>@Html.ValidationMessageFor(a => a.username, "", new { @class = "text-danger" })</td>
-                </tr>
-                <tr>
-                    <td>
-                        @Html.LabelFor(a => a.gender)
-                    </td>
-                    <td>
-                        @Html.TextBoxFor(a => a.gender)
-                    </td>
-                    <td>
-                        @Html.ValidationMessageFor(a => a.gender, "", new { @class = "text-danger" })
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        @Html.LabelFor(a => a.email)
-                    </td>
-                    <td>
-                        @Html.TextBoxFor(a => a.email)
-                    </td>
-                    <td>
-                        @Html.ValidationMessageFor(a => a.email, "", new { @class = "text-danger" })
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        @Html.LabelFor(a => a.password)
-                    </td>
-                    <td>
-                        @Html.PasswordFor(a => a.password)
-                    </td>
-                    <td>
-                        @Html.ValidationMessageFor(a => a.password, "", new { @class = "text-danger" })
-                    </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td>
-                        <input type="submit" value="Signup" />
-                    </td>
-                    <td></td>
-                </tr>
-            </table>
-        </div>
-    </body>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link href="~/Content/login.css" rel="stylesheet" />
+    <title>Signup</title>
+</head>
+<body>
+    @Html.AntiForgeryToken()
+    <div class="login">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <h1>Signup</h1>
+        <table>
+            <tr>
+                <td>@Html.LabelFor(a => a.username)</td>
+                <td>@Html.TextBoxFor(a => a.username)</td>
+                <td>@Html.ValidationMessageFor(a => a.username, "", new { @class = "text-danger" })</td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(a => a.gender)
+                </td>
+                <td>
+                    @Html.TextBoxFor(a => a.gender)
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(a => a.gender, "", new { @class = "text-danger" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(a => a.email)
+                </td>
+                <td>
+                    @Html.TextBoxFor(a => a.email)
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(a => a.email, "", new { @class = "text-danger" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(a => a.password)
+                </td>
+                <td>
+                    @Html.PasswordFor(a => a.password)
+                </td>
+                <td>
+                    @Html.ValidationMessageFor(a => a.password, "", new { @class = "text-danger" })
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <input type="submit" value="Signup" />
+                </td>
+                <td></td>
+            </tr>
+        </table>
+    </div>
+</body>
 </html>
 }
 
