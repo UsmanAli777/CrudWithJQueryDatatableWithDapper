@@ -38,15 +38,15 @@ namespace CrudWithJQueryDatatable.data
             }
         }
 
-        public int CreateEmployeeReturnInt(string StoredProcedure, DynamicParameters param = null)
-        {
-            using (SqlConnection sqlCon = new SqlConnection(connectionString))
-            {
-                sqlCon.Open();
-                sqlCon.Execute(StoredProcedure, param, commandType: CommandType.StoredProcedure);
-                return param.Get<int>("id");
-            }
-        }
+        //public int CreateEmployeeReturnInt(string StoredProcedure, DynamicParameters param = null)
+        //{
+        //    using (SqlConnection sqlCon = new SqlConnection(connectionString))
+        //    {
+        //        sqlCon.Open();
+        //        sqlCon.Execute(StoredProcedure, param, commandType: CommandType.StoredProcedure);
+        //        return param.Get<int>("id");
+        //    }
+        //}
 
         public int CreateUserReturnInt(string StoredProcedure, DynamicParameters param = null)
         {
@@ -57,7 +57,15 @@ namespace CrudWithJQueryDatatable.data
                 return param.Get<int>("id");
             }
         }
-
+        public int CreateEmployeeReturnInt(string StoredProcedure, DynamicParameters param = null)
+        {
+            using (SqlConnection sqlCon = new SqlConnection(connectionString))
+            {
+                sqlCon.Open();
+                sqlCon.Execute(StoredProcedure, param, commandType: CommandType.StoredProcedure);
+                return param.Get<int>("EmployeeId");
+            }
+        }
         public int CreateUserReturnFKInt(string StoredProcedure, DynamicParameters param = null)
         {
             using (SqlConnection sqlCon = new SqlConnection(connectionString))
@@ -75,6 +83,15 @@ namespace CrudWithJQueryDatatable.data
                 sqlCon.Open();
                 sqlCon.Execute(StoredProcedure, param, commandType: CommandType.StoredProcedure);
                 return param.Get<int>("R_Id");
+            }
+        }
+        public int CreateEmployeeReturn(string StoredProcedure, DynamicParameters param = null)
+        {
+            using (SqlConnection sqlCon = new SqlConnection(connectionString))
+            {
+                sqlCon.Open();
+                sqlCon.Execute(StoredProcedure, param, commandType: CommandType.StoredProcedure);
+                return param.Get<int>("EmployeeId");
             }
         }
 

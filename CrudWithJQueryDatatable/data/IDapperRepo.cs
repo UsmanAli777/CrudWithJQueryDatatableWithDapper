@@ -11,8 +11,9 @@ namespace CrudWithJQueryDatatable.data
 
         IEnumerable<T> ReturnList<T>(string procrdureName, DynamicParameters param = null);
 
+        //int CreateEmployeeReturnInt(string StoredProcedure, DynamicParameters param = null);
         int CreateEmployeeReturnInt(string StoredProcedure, DynamicParameters param = null);
-
+        int CreateEmployeeReturn(string StoredProcedure, DynamicParameters param = null);
         int CreateUserReturnInt(string StoredProcedure, DynamicParameters param = null);
 
         int CreateUserReturnFKInt(string StoredProcedure, DynamicParameters param = null);

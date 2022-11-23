@@ -1,4 +1,6 @@
 ﻿using CrudWithJQueryDatatable.Models;
+using CrudWithJQueryDatatable.Models.DataTable;
+using CrudWithJQueryDatatable.services;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -10,11 +12,18 @@ namespace CrudWithJQueryDatatable.Controllers
 {
     public class EmployeeController : Controller
     {
+        private readonly IEmployeeServices _empSer;
+
+        public EmployeeController(IEmployeeServices empSer)
+        {
+            _empSer = empSer;
+        }
         //JqueryDatatableCrudEntities1 db = new JqueryDatatableCrudEntities1();
         // GET: Employee
         [Authorize]
         public ActionResult Index()
         {
+
             return View();
         }
 
@@ -22,32 +31,30 @@ namespace CrudWithJQueryDatatable.Controllers
         public ActionResult GetList()
         {
             //srver side parameters
-            int start = Convert.ToInt32(Request["start"]);
-            int length = Convert.ToInt32(Request["length"]);
-            string searchValue = Request["search[value]"];
-            string sortColumnName = Request["columns[" + Request["order[0][column]"] + "][name]"];
-            string sortDirection = Request["order[0][dir]"];
-
-            List<Employee> empList = new List<Employee>();
-            using (EmployeeDb db = new EmployeeDb())
+            var request = new DataTableRequest();
+            request.Draw = Convert.ToInt32(Request.Form["draw"]);
+            request.Start = Convert.ToInt32(Request.Form["start"]);
+            request.Length = Convert.ToInt32(Request.Form["length"]);
+            request.Search = new DataTableSearch()
             {
-                empList = db.Employees.ToList<Employee>();
-                int totalrows = empList.Count;
-                if (!string.IsNullOrEmpty(searchValue))//filter
-                {
-                    empList = empList.
-                        Where(x => x.Name.ToLower().Contains(searchValue.ToLower()) || x.Position.ToLower().Contains(searchValue.ToLower()) || x.Office.ToLower().Contains(searchValue.ToLower()) || x.Age.ToString().Contains(searchValue.ToLower()) || x.Salary.ToString().Contains(searchValue.ToLower())).ToList<Employee>();
-                }
-                int totalrowsafterfiltering = empList.Count;
-                //sorting
-                empList = empList.OrderBy(sortColumnName + " " + sortDirection).ToList<Employee>();
+                Value = Request.Form["search[value]"]
+            };
+            request.Order = new DataTableOrder[] {
+            new DataTableOrder()
+            {
+                Dir = Request.Form["order[0][dir]"],
+               Column = Convert.ToInt32(Request.Form["order[0][column]"])
+            }};
+            //var datalist = _Role.GetAllUserDT(request);
 
-                //paging
-                empList = empList.Skip(start).Take(length).ToList<Employee>();
+            //return Json(data);
+            var result = _empSer.GetAllEmployeeDT(request);
+            result.draw = request.Draw;
+            result.recordsTotal = result.recordsFiltered;
 
-                return Json(new { data = empList, draw = Request["draw"], recordsTotal = totalrows, recordsFiltered = totalrowsafterfiltering }, JsonRequestBehavior.AllowGet);
-            }
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
+
 
         [HttpGet]
         public ActionResult AddOrEdit(int id = 0)
@@ -56,48 +63,34 @@ namespace CrudWithJQueryDatatable.Controllers
                 return View(new Employee());
             else
             {
-                using (EmployeeDb db = new EmployeeDb())
-                {
-                    return View(db.Employees.Where(x => x.EmployeeId == id).FirstOrDefault<Employee>());
-                }
+                return View(_empSer.GetEmployeeById(id));
             }
         }
 
         [HttpPost]
-        public ActionResult AddOrEdit(Employee emp)
+        public ActionResult AddOrEdit( Employee emp)
         {
-            using (EmployeeDb db = new EmployeeDb())
+            if (emp.EmployeeId == 0)
             {
-                if (emp.EmployeeId == 0)
+                if(ModelState.IsValid)
                 {
-                    db.Employees.Add(emp);
-                    db.SaveChanges();
-                    return RedirectToAction("Index", "Employee");
-                    //return Json(new { success = true, message = "Save Successfully" }, JsonRequestBehavior.AllowGet);
-                    //return ('<script>  </script>');
-                }
-                else
-                {
-                    db.Entry(emp).State = EntityState.Modified;
-                    db.SaveChanges();
-                    return RedirectToAction("Index", "Employee");
-                    //return Json(new { success = true, message = "Updated Successfully" }, JsonRequestBehavior.AllowGet);
+                    _empSer.AddEmployee(emp);
+                    return Redirect("~/Employee/Index");
                 }
             }
+            else
+            {
+                _empSer.UpdateEmployee(emp);
+                return Redirect("~/Employee/Index");
+            }
+            return View();
         }
 
         [HttpPost]
         public ActionResult Delete(int id)
         {
-            using (EmployeeDb db = new EmployeeDb())
-            {
-                Employee emp = db.Employees.Where(x => x.EmployeeId == id).FirstOrDefault<Employee>();
-                db.Employees.Remove(emp);
-                db.SaveChanges();
-                return RedirectToAction("Index", "Employee");
-                //return Json(new { success = true, message = "Deleted Successfully" }, JsonRequestBehavior.AllowGet);
-                // return RedirectToAction("Index", "Employee");
-            }
+            _empSer.DeleteEmployee(id);
+            return Redirect("~/Employee/Index");
         }
     }
 }

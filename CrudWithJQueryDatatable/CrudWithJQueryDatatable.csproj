@@ -239,25 +239,8 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
-    <EntityDeploy Include="Models\EmployeeDB.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>EmployeeDB.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Models\EmployeeDB.edmx.diagram">
-      <DependentUpon>EmployeeDB.edmx</DependentUpon>
-    </Content>
     <Content Include="libman.json" />
     <None Include="Scripts\jquery-2.0.0.intellisense.js" />
-    <Content Include="Models\EmployeeDB.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>EmployeeDB.edmx</DependentUpon>
-      <LastGenOutput>EmployeeDB.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="Models\EmployeeDB.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>EmployeeDB.edmx</DependentUpon>
-      <LastGenOutput>EmployeeDB.cs</LastGenOutput>
-    </Content>
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\buttons.flash.min.js" />
@@ -304,34 +287,20 @@
     <Compile Include="Models\DataTable\DataTableRequest.cs" />
     <Compile Include="Models\DataTable\DataTableResponse.cs" />
     <Compile Include="Models\DataTable\DTReq.cs" />
+    <Compile Include="Models\DataTable\EmployeePartial.cs" />
     <Compile Include="Models\DataTable\ListingRequest.cs" />
     <Compile Include="Models\DataTable\ListingRequestDT.cs" />
     <Compile Include="Models\DataTable\UserPartial.cs" />
-    <Compile Include="Models\Employee.cs">
-      <DependentUpon>EmployeeDB.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\EmployeeDB.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>EmployeeDB.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\EmployeeDB.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>EmployeeDB.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\EmployeeDB.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>EmployeeDB.edmx</DependentUpon>
-    </Compile>
+    <Compile Include="Models\Employee.cs" />
     <Compile Include="Models\login.cs" />
     <Compile Include="Models\Role.cs" />
     <Compile Include="Models\RoleEdit.cs" />
     <Compile Include="Models\UserDetail.cs" />
     <Compile Include="Models\UserEdit.cs" />
     <Compile Include="Models\UserRoleEdit.cs" />
+    <Compile Include="services\EmployeeServices.cs" />
     <Compile Include="services\Generic.cs" />
+    <Compile Include="services\IEmployeeServices.cs" />
     <Compile Include="services\IGeneric.cs" />
     <Compile Include="viewModel\UserRolePartial.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -49,5 +49,22 @@ namespace CrudWithJQueryDatatable.services
                 throw new Exception(ex.Message, ex);
             }
         }
+        public DataTableResponse<EmployeePartial> GetAllEmployeeMultiple(DTReq request)
+        {
+            try
+            {
+                Dapper.DynamicParameters param = new DynamicParameters();
+                param.Add("SearchText", request.SearchText, DbType.String);
+                param.Add("SortExpression", request.SortExpression, DbType.String);
+                param.Add("StartRowIndex", request.StartRowIndex, DbType.Int32);
+                param.Add("PageSize", request.PageSize, DbType.Int32);
+
+                return _dapperRepo.ReturnListMultiple<EmployeePartial>("dbo.GetAllEmployeeDT", param);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex);
+            }
+        }
     }
 }

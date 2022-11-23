@@ -48,6 +48,7 @@ namespace CrudWithJQueryDatatable
             container.RegisterType<IUserServices, UserServices>();
             container.RegisterType<IDapperRepo, DapperRepo>();
             container.RegisterType<IRoleServices, RoleServices> ();
+            container.RegisterType<IEmployeeServices, EmployeeServices> ();
             
         }
     }
