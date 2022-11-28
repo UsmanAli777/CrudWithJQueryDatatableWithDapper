@@ -2,10 +2,7 @@
 using CrudWithJQueryDatatable.Models.DataTable;
 using CrudWithJQueryDatatable.services;
 using System;
-using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
-using System.Linq.Dynamic;
 using System.Web.Mvc;
 
 namespace CrudWithJQueryDatatable.Controllers
@@ -18,14 +15,24 @@ namespace CrudWithJQueryDatatable.Controllers
         {
             _empSer = empSer;
         }
+
         //JqueryDatatableCrudEntities1 db = new JqueryDatatableCrudEntities1();
         // GET: Employee
         [Authorize]
-        public ActionResult Index()
+        public ActionResult Index(EmployeeDetails ed)
         {
-
-            return View();
+            ViewBag.ListItemSubject = new SelectList(_empSer.GetAllSubject(), "SubjectId", "SubjectName");
+            var Employee = _empSer.GetAllEmployeeRecord(ed).ToList();
+            return View(Employee);
         }
+
+        //[HttpPost]
+        //public ActionResult Index(EmployeeDetails ed)
+        //{
+        //    var Employee = _empSer.GetAllEmployeeRecord(ed).ToList();
+        //    return Json(new { data = Employee }, JsonRequestBehavior.AllowGet);
+        //    //return View();
+        //}
 
         [HttpPost]
         public ActionResult GetList()
@@ -39,6 +46,7 @@ namespace CrudWithJQueryDatatable.Controllers
             {
                 Value = Request.Form["search[value]"]
             };
+
             request.Order = new DataTableOrder[] {
             new DataTableOrder()
             {
@@ -48,13 +56,13 @@ namespace CrudWithJQueryDatatable.Controllers
             //var datalist = _Role.GetAllUserDT(request);
 
             //return Json(data);
-            var result = _empSer.GetAllEmployeeDT(request);
+            var subject = Convert.ToInt32(Request.Form["string1"]);
+            var result = _empSer.GetAllEmployeeDT(request, subject);
             result.draw = request.Draw;
-            result.recordsTotal = result.recordsFiltered;
+            //result.recordsTotal = result.recordsFiltered;
 
             return Json(result, JsonRequestBehavior.AllowGet);
         }
-
 
         [HttpGet]
         public ActionResult AddOrEdit(int id = 0)
@@ -68,11 +76,11 @@ namespace CrudWithJQueryDatatable.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddOrEdit( Employee emp)
+        public ActionResult AddOrEdit(Employee emp)
         {
             if (emp.EmployeeId == 0)
             {
-                if(ModelState.IsValid)
+                if (ModelState.IsValid)
                 {
                     _empSer.AddEmployee(emp);
                     return Redirect("~/Employee/Index");

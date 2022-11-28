@@ -11,5 +11,6 @@ namespace CrudWithJQueryDatatable.Models.DataTable
         public string SortExpression { get; set; }
         public int StartRowIndex { get; set; }
         public int PageSize { get; set; }
+        public int SubjectId { get; set; }
     }
 }

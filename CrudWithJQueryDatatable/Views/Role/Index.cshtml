@@ -15,6 +15,14 @@
         </tr>
     </thead>
     <tbody></tbody>
+    <tfoot>
+        <tr>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Actions</th>
+        </tr>
+    </tfoot>
 </table>
 
 <link href="https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.8.8/semantic.min.css" rel="stylesheet" />
@@ -55,7 +63,7 @@
         $(document).ready(function () {
             dataTable = $("#roleTable").DataTable({
                 //"dom": "Bflrtip",
-                "Processing": true, // for show progress bar
+                "processing": true, // for show progress bar
                 "serverSide": true, // for process server side
                 //"filter": true, // this is for disable filter (search box)
                 //"orderMulti": true, // for disable multiple column at once

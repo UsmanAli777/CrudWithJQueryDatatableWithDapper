@@ -292,9 +292,11 @@
     <Compile Include="Models\DataTable\ListingRequestDT.cs" />
     <Compile Include="Models\DataTable\UserPartial.cs" />
     <Compile Include="Models\Employee.cs" />
+    <Compile Include="Models\EmployeeDetails.cs" />
     <Compile Include="Models\login.cs" />
     <Compile Include="Models\Role.cs" />
     <Compile Include="Models\RoleEdit.cs" />
+    <Compile Include="Models\Subject.cs" />
     <Compile Include="Models\UserDetail.cs" />
     <Compile Include="Models\UserEdit.cs" />
     <Compile Include="Models\UserRoleEdit.cs" />

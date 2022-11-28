@@ -2,11 +2,9 @@
 using CrudWithJQueryDatatable.Models;
 using CrudWithJQueryDatatable.Models.DataTable;
 using Dapper;
-using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Web;
 
 namespace CrudWithJQueryDatatable.services
 {
@@ -20,18 +18,35 @@ namespace CrudWithJQueryDatatable.services
             _dapperRepo = dapperRepo;
             _generic = generic;
         }
-        public DataTableResponse<EmployeePartial> GetAllEmployeeDT(DataTableRequest request)
+
+        public IEnumerable<EmployeeDetails> GetAllEmployeeRecord(EmployeeDetails model)
+        {
+            List<EmployeeDetails> employee = new List<EmployeeDetails>();
+            employee = _dapperRepo.ReturnList<EmployeeDetails>("dbo.GetAllEmployeeRecord").ToList();
+            return (employee);
+        }
+
+        public IEnumerable<Subject> GetAllSubject()
+        {
+            List<Subject> subject = new List<Subject>();
+            subject = _dapperRepo.ReturnList<Subject>("dbo.GetAllSubject").ToList();
+            return (subject);
+        }
+
+        public DataTableResponse<EmployeePartial> GetAllEmployeeDT(DataTableRequest request, int sub)
         {
             var req = new DTReq()
             {
+                SubjectId = sub,
                 StartRowIndex = request.Start,
                 PageSize = request.Length,
                 SortExpression = request.Order[0].Dir,
-                SearchText = request.Search != null ? request.Search.Value.Trim() : ""
+                SearchText = request.Search != null ? request.Search.Value.Trim() : "",
             };
 
             return _generic.GetAllEmployeeMultiple(req);
         }
+
         public int AddEmployee(Employee model)
         {
             DynamicParameters param = new DynamicParameters();
@@ -43,6 +58,7 @@ namespace CrudWithJQueryDatatable.services
             param.Add("@Salary", model.Salary);
             return _dapperRepo.CreateEmployeeReturn("dbo.AddEmployee", param);
         }
+
         public Employee GetEmployeeById(int id)
         {
             Dapper.DynamicParameters param = new DynamicParameters();
@@ -50,6 +66,7 @@ namespace CrudWithJQueryDatatable.services
             var user = _dapperRepo.ReturnList<Employee>("dbo.GetEmployeeById", param).FirstOrDefault();
             return user;
         }
+
         public int UpdateEmployee(Employee model)
         {
             DynamicParameters parameter = new DynamicParameters();
@@ -61,6 +78,7 @@ namespace CrudWithJQueryDatatable.services
             parameter.Add("@Salary", model.Salary);
             return _dapperRepo.CreateEmployeeReturnInt("UpdateEmployee", parameter);
         }
+
         public int DeleteEmployee(int id)
         {
             Dapper.DynamicParameters param = new DynamicParameters();

@@ -1,7 +1,6 @@
 using CrudWithJQueryDatatable.data;
 using CrudWithJQueryDatatable.services;
 using System;
-
 using Unity;
 
 namespace CrudWithJQueryDatatable
@@ -47,6 +46,7 @@ namespace CrudWithJQueryDatatable
             // TODO: Register your type's mappings here.
             container.RegisterType<IUserServices, UserServices>();
             container.RegisterType<IDapperRepo, DapperRepo>();
+            container.RegisterType<IGeneric, Generic>();
             container.RegisterType<IRoleServices, RoleServices> ();
             container.RegisterType<IEmployeeServices, EmployeeServices> ();
             

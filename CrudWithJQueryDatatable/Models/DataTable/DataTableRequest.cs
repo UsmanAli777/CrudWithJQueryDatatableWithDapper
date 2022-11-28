@@ -9,7 +9,9 @@
         public DataTableOrder[] Order { get; set; }
         public DataTableColumn[] Columns { get; set; }
         public DataTableSearch Search { get; set; }
+        
     }
+    
     public class DataTableSearch
     {
         public string Value { get; set; }

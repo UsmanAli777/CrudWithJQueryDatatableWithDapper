@@ -1,7 +1,14 @@
 ﻿@{
     ViewBag.Title = "Employee List";
+
+    SelectList ListItemSubject = ViewBag.ListItemSubject;
 }
 <h2 class="mb-4">Employee Details</h2>
+
+<p>Please Select for Sorting by Subject.</p> @Html.DropDownList("ddlSubject", ListItemSubject, "", new { id = "ddlSubject", style = " width: 150px; background-color: #4CAF50;  cursor: pointer; color: white;  padding: 6px 15px;margin-top: 0px 0px;" })
+
+<br />
+<br />
 <a class="btn btn-success" style="margin-bottom: 10px" data-toggle="modal" data-target="#exampleModalCenter" data-url="/Employee/AddOrEdit" data-type='add'> Add New Employee</a>
 
 <table id="employeeTable" class="ui celled table" width="100%">
@@ -12,9 +19,11 @@
             <th>Office</th>
             <th>Age</th>
             <th>Salary</th>
+            <th>Subject</th>
             <th>Actions</th>
         </tr>
     </thead>
+    <tbody></tbody>
     <tfoot>
         <tr>
             <th>Name</th>
@@ -22,6 +31,7 @@
             <th>Office</th>
             <th>Age</th>
             <th>Salary</th>
+            <th>Subject</th>
             <th>Actions</th>
         </tr>
     </tfoot>
@@ -60,25 +70,31 @@
     <script src="~/Scripts/jquery.validate.min.js"></script>
 
     <script>
+        //this is the main datatable for processing 
         var dataTable;
         $(document).ready(function () {
             dataTable = $("#employeeTable").DataTable({
+                //"dom": '<"top"i>rt<"bottom"lp><"clear">',   //for understanding this line means how they work then go to this project folder and then go to images folder and i save imgae on this folder please see...
                 "dom": "Bflrtip",
 
                 "ajax": {
                     "url": "/Employee/GetList",
                     "type": "POST",
-                    "datatype":"json"
+                    "datatype": "json",
+                    "data": function (d) {
+                        d.string1 = $("#ddlSubject").val() === '' ? '0' : $("#ddlSubject").val()
+                    }
                 },
                 "columns": [
-                    { "data": "Name","name":"Name" },
+                    { "data": "Name", "name": "Name" },
                     { "data": "Position", "name": "Position" },
                     { "data": "Office", "name": "Office" },
                     { "data": "Age", "name": "Age" },
                     { "data": "Salary", "name": "Salary" },
+                    { "data": "SubjectName", "name": "Subject" },
                     {
                         "data": "EmployeeId", "render": function (data) {
-                            return "<a class='btn btn-primary btn-sm' data-url='/Employee/AddOrEdit?id=" + data +"' data-type='edit' data-toggle='modal' data-target='#exampleModalCenter' > Edit</a> <a class='btn btn-danger btn-sm' onclick =Delete("+ data +") >Delete</a>"
+                            return "<a class='btn btn-primary btn-sm' data-url='/Employee/AddOrEdit?id=" + data + "' data-type='edit' data-toggle='modal' data-target='#exampleModalCenter' > Edit</a> <a class='btn btn-danger btn-sm' onclick =Delete(" + data + ") >Delete</a>"
                         },
                         "width": "150px"
                     }
@@ -86,6 +102,7 @@
                 "serverSide": true,
                 "order": [0, "asc"],
                 "processing": true,
+                "bDestroy" : true,
 
                 "language": {
                     "processing": "Processing... Please wait ",
@@ -95,6 +112,17 @@
             });
         });
 
+
+
+
+        //datatable reload after select item from dropdown
+        $('#ddlSubject').on('change', function (dropdown) {
+            dataTable.ajax.reload();
+        });
+
+
+
+        //model call for add and edit functionalities 
         $('#exampleModalCenter').on('shown.bs.modal', function (event) {
             $('#shaankds').html('<img src="/images/200.gif" />');
             var url = '';
@@ -105,6 +133,9 @@
                 });
         });
 
+
+
+        //through swal for delete functionality
         function Delete(id) {
             const swalWithBootstrapButtons = Swal.mixin({
                 customClass: {
