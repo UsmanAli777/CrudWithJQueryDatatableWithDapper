@@ -70,7 +70,7 @@
     <script src="~/Scripts/jquery.validate.min.js"></script>
 
     <script>
-        //this is the main datatable for processing 
+        //this is the main datatable for processing
         var dataTable;
         $(document).ready(function () {
             dataTable = $("#employeeTable").DataTable({
@@ -112,17 +112,12 @@
             });
         });
 
-
-
-
         //datatable reload after select item from dropdown
         $('#ddlSubject').on('change', function (dropdown) {
             dataTable.ajax.reload();
         });
 
-
-
-        //model call for add and edit functionalities 
+        //model call for add and edit functionalities
         $('#exampleModalCenter').on('shown.bs.modal', function (event) {
             $('#shaankds').html('<img src="/images/200.gif" />');
             var url = '';
@@ -131,9 +126,8 @@
                 .done(function (response) {
                     $('#shaankds').html(response);
                 });
+            dataTable.ajax.reload();
         });
-
-
 
         //through swal for delete functionality
         function Delete(id) {

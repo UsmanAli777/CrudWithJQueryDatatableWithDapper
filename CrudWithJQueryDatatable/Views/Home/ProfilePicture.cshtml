@@ -3,14 +3,120 @@
     Layout = null;
 }
 
+@*@{
+        Layout = null;
+    }
+
+    <!DOCTYPE html>
+
+    <html>
+    <head>
+        <meta name="viewport" content="width=device-width" />
+        <title>Index</title>
+    </head>
+    <body>
+        @using (Html.BeginForm("save", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            <input type="file" id="FileUpload1" />
+            <br />
+            <br />
+            <table border="0" cellpadding="0" cellspacing="5">
+                <tr>
+                    <td>
+                        <img id="Image1" src="" alt="" style="display: none; height: 500px; width:800px; " />
+                    </td>
+                    <td>
+                        <canvas id="canvas" height="5" width="5"></canvas>
+                    </td>
+                </tr>
+            </table>
+            <br />
+            <input type="button" id="btnCrop" value="Crop" style="display: none" />
+            <input type="submit" id="btnUpload" value="Upload" style="display: none" />
+            <input type="hidden" name="imgX1" id="imgX1" />
+            <input type="hidden" name="imgY1" id="imgY1" />
+            <input type="hidden" name="imgWidth" id="imgWidth" />
+            <input type="hidden" name="imgHeight" id="imgHeight" />
+            <input type="hidden" name="imgCropped" id="imgCropped" />
+        }
+
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-jcrop/0.9.9/js/jquery.Jcrop.min.js"></script>
+        <script type="text/javascript">
+            $(function () {
+                $('#FileUpload1').change(function () {
+                    $('#Image1').hide();
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        $('#Image1').show();
+                        $('#Image1').attr("src", e.target.result);
+                        $('#Image1').Jcrop({
+                            onChange: SetCoordinates,
+                            onSelect: SetCoordinates
+                        });
+                    }
+                    reader.readAsDataURL($(this)[0].files[0]);
+                });
+
+                $('#btnCrop').click(function () {
+                    var x1 = $('#imgX1').val();
+                    var y1 = $('#imgY1').val();
+                    var width = $('#imgWidth').val();
+                    var height = $('#imgHeight').val();
+                    var canvas = $("#canvas")[0];
+                    var context = canvas.getContext('2d');
+                    var img = new Image();
+                    img.onload = function () {
+                        canvas.height = height;
+                        canvas.width = width;
+                        context.drawImage(img, x1, y1, width, height, 0, 0, width, height);
+                        $('#imgCropped').val(canvas.toDataURL());
+                        $('#btnUpload').show();
+                    };
+                    img.src = $('#Image1').attr("src");
+                });
+            });
+            function SetCoordinates(c) {
+                $('#imgX1').val(c.x);
+                $('#imgY1').val(c.y);
+                $('#imgWidth').val(c.w);
+                $('#imgHeight').val(c.h);
+                $('#btnCrop').show();
+            };
+        </script>
+    </body>
+    </html>*@
+
 <form action="@Url.Content("~/Home/ProfilePicture")" id="myform" method="post" enctype="multipart/form-data">
+    @*<div>
+            <div class="container bootstrap snippet">
+
+                <div class="row">
+                    <div class="col-sm-3">
+                        <br />
+                        <br />
+                        <div class="text-center">
+                            <div id="main-cropper"></div>
+                            <a class="button actionSelect">
+                                @Html.LabelFor(a => a.image)<br />
+                                <img src="~/images/avatar_2x.png" class="avatar img-circle img-thumbnail"  alt="avatar">
+                                <input type="file" id="select" value="Choose Image" accept="image/*" class="text-left center-block file-upload" name="ImageFile">
+                            </a>
+                        </div><br />
+                        <button type="submit" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button class="actionUpload btn btn-rimary">Upload</button>
+                        <br />
+                        <br />
+                    </div>
+                </div>
+            </div>
+        </div>*@
 
     <div>
         <div class="container bootstrap snippet">
 
             <div class="row">
                 <div class="col-sm-3">
-                    <!--left col-->
 
                     <div class="text-center">
                         @Html.LabelFor(a => a.image)
@@ -44,4 +150,38 @@
             readURL(this);
         });
     });
-</script>
+
+@*var basic = $('#main-cropper').croppie({
+            viewport: { width: 200, height: 300 },
+            boundary: { width: 300, height: 400 },
+            showZoomer: false
+    });
+    function readFile(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#main-cropper').croppie('bind', {
+                        url: e.target.result
+                    });
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+    }
+    $('.actionSelect input').on('change', function () { readFile(this); });
+        $('.actionUpload').on('click', function() {
+            basic.croppie('result','blob').then(function(blob) {
+                var formData = new FormData();
+                formData.append('filename', 'testFileName.png');
+                formData.append('blob', blob);
+                var MyAppUrlSettings = {
+                    MyUsefulUrl: '@Url.Action("ProfilePicture", "Home")'
+                }
+
+                var request = new XMLHttpRequest();
+                request.open('POST', MyAppUrlSettings.MyUsefulUrl);
+                request.send(formData);
+            });
+        });*@
+<!--</script>-->

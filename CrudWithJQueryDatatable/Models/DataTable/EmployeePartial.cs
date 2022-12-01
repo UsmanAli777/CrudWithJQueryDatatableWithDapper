@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace CrudWithJQueryDatatable.Models.DataTable
+﻿namespace CrudWithJQueryDatatable.Models.DataTable
 {
     public partial class EmployeePartial
     {
@@ -14,8 +9,8 @@ namespace CrudWithJQueryDatatable.Models.DataTable
         public int Age { get; set; }
         public int Salary { get; set; }
         public string SubjectName { get; set; }
-
     }
+
     public partial class EmployeePartial
     {
         public int TotalCount { get; set; }

@@ -1,7 +1,6 @@
 ﻿using CrudWithJQueryDatatable.Models;
 using CrudWithJQueryDatatable.Models.DataTable;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace CrudWithJQueryDatatable.services
 {
@@ -20,6 +19,7 @@ namespace CrudWithJQueryDatatable.services
         void RemoveUserRole(int userId, int roleId);
 
         int DeleteUser(int id);
+
         //Task<DataTableResponse<UserPartial>> GetAllUserAsync(DataTableRequest request);
         DataTableResponse<UserPartial> GetAllUserDT(DataTableRequest request);
     }

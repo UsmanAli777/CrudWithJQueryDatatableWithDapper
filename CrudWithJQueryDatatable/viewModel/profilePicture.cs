@@ -9,5 +9,6 @@ namespace CrudWithJQueryDatatable.viewModel
         public string image { get; set; }
 
         public HttpPostedFileBase ImageFile { get; set; }
+        //public HttpPostedFileBase blob { get; set; }
     }
 }

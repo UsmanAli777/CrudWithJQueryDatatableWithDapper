@@ -1,5 +1,4 @@
 ﻿using CrudWithJQueryDatatable.Models;
-using CrudWithJQueryDatatable.Models.DataTable;
 using CrudWithJQueryDatatable.services;
 using CrudWithJQueryDatatable.viewModel;
 using Microsoft.AspNet.Identity;
@@ -253,6 +252,19 @@ namespace CrudWithJQueryDatatable.Controllers
         {
             return View();
         }
+
+        //[HttpPost]
+        //public ActionResult Save()
+        //{
+        //    string base64 = Request.Form["imgCropped"];
+        //    byte[] bytes = Convert.FromBase64String(base64.Split(',')[1]);
+        //    using (FileStream stream = new FileStream(Server.MapPath("~/images/Cropped.png"), FileMode.Create))
+        //    {
+        //        stream.Write(bytes, 0, bytes.Length);
+        //        stream.Flush();
+        //    }
+        //    return RedirectToAction("Index","Employee");
+        //}
 
         [HttpPost]
         public ActionResult ProfilePicture(profilePicture s)

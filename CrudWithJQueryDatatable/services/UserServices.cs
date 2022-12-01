@@ -1,6 +1,5 @@
 ﻿using CrudWithJQueryDatatable.data;
 using CrudWithJQueryDatatable.Models;
-using CrudWithJQueryDatatable.Models.DataTable;
 using CrudWithJQueryDatatable.viewModel;
 using Dapper;
 using System;
@@ -8,7 +7,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Security.Cryptography;
-using System.Threading.Tasks;
 
 namespace CrudWithJQueryDatatable.services
 {

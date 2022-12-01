@@ -2,7 +2,6 @@
 using CrudWithJQueryDatatable.Models.DataTable;
 using CrudWithJQueryDatatable.services;
 using System;
-using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
@@ -56,7 +55,7 @@ namespace CrudWithJQueryDatatable.Controllers
             var result = _Role.GetAllUserDT(request);
             result.draw = request.Draw;
             result.recordsTotal = result.recordsFiltered;
-            
+
             return Json(result, JsonRequestBehavior.AllowGet);
 
             //return Json(new { data = datalist, draw = Request["draw"] }, JsonRequestBehavior.AllowGet);

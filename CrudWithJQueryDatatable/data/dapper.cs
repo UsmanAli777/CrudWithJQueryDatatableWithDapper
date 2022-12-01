@@ -57,6 +57,7 @@ namespace CrudWithJQueryDatatable.data
                 return param.Get<int>("id");
             }
         }
+
         public int CreateEmployeeReturnInt(string StoredProcedure, DynamicParameters param = null)
         {
             using (SqlConnection sqlCon = new SqlConnection(connectionString))
@@ -66,6 +67,7 @@ namespace CrudWithJQueryDatatable.data
                 return param.Get<int>("EmployeeId");
             }
         }
+
         public int CreateUserReturnFKInt(string StoredProcedure, DynamicParameters param = null)
         {
             using (SqlConnection sqlCon = new SqlConnection(connectionString))
@@ -85,6 +87,7 @@ namespace CrudWithJQueryDatatable.data
                 return param.Get<int>("R_Id");
             }
         }
+
         public int CreateEmployeeReturn(string StoredProcedure, DynamicParameters param = null)
         {
             using (SqlConnection sqlCon = new SqlConnection(connectionString))

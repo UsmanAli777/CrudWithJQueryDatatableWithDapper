@@ -1,8 +1,6 @@
 ﻿using CrudWithJQueryDatatable.Models;
-using CrudWithJQueryDatatable.Models.DataTable;
 using CrudWithJQueryDatatable.viewModel;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace CrudWithJQueryDatatable.services
 {

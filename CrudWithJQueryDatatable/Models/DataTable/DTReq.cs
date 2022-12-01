@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace CrudWithJQueryDatatable.Models.DataTable
+﻿namespace CrudWithJQueryDatatable.Models.DataTable
 {
     public class DTReq
     {

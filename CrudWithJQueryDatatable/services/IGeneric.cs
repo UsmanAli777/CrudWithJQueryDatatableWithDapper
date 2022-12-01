@@ -1,6 +1,4 @@
 ﻿using CrudWithJQueryDatatable.Models.DataTable;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace CrudWithJQueryDatatable.services
 {
@@ -8,6 +6,7 @@ namespace CrudWithJQueryDatatable.services
     {
         //Task<List<UserPartial>> GetUserAsync(ListingRequest request);
         DataTableResponse<UserPartial> GetAllUserMultiple(DTReq request);
+
         DataTableResponse<EmployeePartial> GetAllEmployeeMultiple(DTReq request);
     }
 }
